@@ -283,7 +283,7 @@ public Action Command_ForceBuild(int client, int args)
 
 
     // Success, Get the building name translation key and print message
-    EW_GetBuildingTranslation(buildingType, false, buffer, sizeof(buffer));
+    EW_GetTranslationKey(buildingType, false, buffer, sizeof(buffer));
     if (owner == client)
         ShowActivity2(client, EW_CHAT_TAG, " %t", "EW_ForceBuild_Spawn", level, buffer);
     else
@@ -308,7 +308,11 @@ static stock void CreateBeamRing(
     int blue=75,
     int alpha=255)
 {
-    int beamColor[4] = {red, green, blue, alpha};
+    int beamColor[4];
+    beamColor[0] = red;
+    beamColor[1] = green;
+    beamColor[2] = blue;
+    beamColor[3] = alpha;
     TE_SetupBeamRingPoint(position, 10.0, 250.0, g_BeamSprite, g_HaloSprite, 0, 15, 0.5, 5.0, 0.0, beamColor, 10, 0);
     TE_SendToAll();
 }

@@ -68,8 +68,8 @@
     }
     "EW_ConfigBadType"
     {
-        "#format" "{1:s},{2:s}"
-        "en" "Unknown building type '{1}' in config file '{2}'"
+        "#format" "{1:s}"
+        "en" "Unknown building type '{1}' in config file."
     }
     "EW_MissingGameData"
     {

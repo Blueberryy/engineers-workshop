@@ -109,7 +109,7 @@ public void Event_Sapped(Event ev, const char[] name, bool dontBroadcast)
     int attacker = GetClientOfUserId(ev.GetInt("userid", 0));
     int building = EW_GetSappedBuilding(sapper, true);
     int type = EW_GetBuildingType(building); // Checks building index
-    int typeIndex = EW_TypeToIndex(buildingType);
+    int typeIndex = EW_TypeToIndex(type);
     if (type == 0 || typeIndex == -1)
         return;
 

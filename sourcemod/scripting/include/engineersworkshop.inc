@@ -25,6 +25,7 @@
 #define _engieshop_included
 
 #include <sdktools> // For a bunch of stuff (mostly spawning related)
+#include <tf2_stocks> // TF2_GetObjectType, TF2_GetObjectMode
 
 
 //==================================================================
@@ -83,7 +84,7 @@ enum struct Cooldown
      */
     void Reset()
     {
-        for (int i = 0; i < sizeof(this.times[]); i++)
+        for (int i = 0; i < MAXPLAYERS + 1; i++)
             this.times[i] = 0;
     }
 
@@ -113,7 +114,7 @@ enum struct Cooldown
     bool IsAllowed(int client, bool autoUpdate=true)
     {
         int now = GetTime();
-        if (now - this.times[client] <= interval)
+        if (now - this.times[client] <= this.interval)
             return true;
         if (autoUpdate)
             this.Update(client, now);
@@ -753,7 +754,7 @@ stock bool EW_StringToBool(const char[] str, bool &error=false)
     buffer[len] = '\0';
     
     bool result = false;
-    error = !g_boolStrings.GetValue(buffer, buildingType);
+    error = !g_boolStrings.GetValue(buffer, result);
     return result;
 }
 
@@ -779,7 +780,7 @@ stock int EW_GetCmdArgBuildingType(int arg)
  * @param error   Optional error state output. True if string is invalid.
  * @return        True if string represents a true boolean value.
  */
-stock bool EW_GetCmdArgBoolString(int arg, int &error=false)
+stock bool EW_GetCmdArgBoolString(int arg, bool &error=false)
 {
     char buffer[MAX_BOOLSTRING_SIZE];
     GetCmdArg(arg, buffer, sizeof(buffer));
@@ -867,7 +868,7 @@ stock void EW_SetBuildingArrayBool(
 stock bool EW_IsSingleType(int buildingType)
 {
     // If value is non-zero and is a power of 2 it is a single flag
-    return x > 0 && (x & (x - 1)) == 0;
+    return buildingType > 0 && (buildingType & (buildingType - 1)) == 0;
 }
 
 
@@ -957,7 +958,10 @@ stock bool EW_ShowAnnotation(
 
     // Verify client
     if (client < 1 || client > MaxClients) // Can't display to server
-        return ThrowError("%T", "EW_InvalidClient", LANG_SERVER, client);
+    {
+        ThrowError("%T", "EW_InvalidClient", LANG_SERVER, client);
+        return false;
+    }
     // Due to integers being limited to 32 bit, there's no way to set
     // the visibilityBitfield for any client index higher than 32.
     if (client >= 32)
@@ -970,7 +974,10 @@ stock bool EW_ShowAnnotation(
     // Check if we are following entity or using a position
     bool usingPos = !IsNullVector(position);
     if (!usingPos && !IsValidEntity(followEntity)) // TODO: Should this be edict?
-        return ThrowError("%T", "EW_InvalidEntity", LANG_SERVER, followEntity);
+    {
+        ThrowError("%T", "EW_InvalidEntity", LANG_SERVER, followEntity);
+        return false;
+    }
 
     // Verify duration
     if (duration < 0.0)
@@ -978,12 +985,12 @@ stock bool EW_ShowAnnotation(
 
     // Precache sound if it is not default
     bool defaultSound = IsNullString(sound);
-    if (!defaultSound && !IsSoundPrecached(sound))
+    if (!defaultSound)
         PrecacheSound(sound);
         
     // Get formatted input string
     int len = strlen(format) + 255;
-    char[] message = new char[len]
+    char[] message = new char[len];
     if (!IsNullString(format))
         VFormat(message, len, format, 8);
     else
@@ -1566,7 +1573,10 @@ static void InitStringsCache()
     char configPath[PLATFORM_MAX_PATH];
     BuildPath(Path_SM, configPath, sizeof(configPath), "configs/engineersworkshop_data.cfg");
     if (!FileExists(configPath))
-        return SetFailState("%T", "EW_NoConfig", LANG_SERVER, configPath);
+    {
+        SetFailState("%T", "EW_NoConfig", LANG_SERVER, configPath);
+        return;
+    }
 
     // Import keyvalues
     KeyValues kv = new KeyValues("EngieShopData");
@@ -1650,7 +1660,7 @@ static void Config_ProcessBuildingNames(KeyValues &kv)
                 buildingType = BUILDING_TELEPORTERS;
             else
             {
-                LogError("%T", "EW_ConfigBadType", LANG_SERVER, type, g_configPath);
+                LogError("%T", "EW_ConfigBadType", LANG_SERVER, type);
                 continue;
             }
 
