@@ -1,0 +1,24 @@
+"Updater"
+{
+  "Information"
+  {
+    "Version"
+    {
+      "Latest" "1.0.0"
+      "Previous" "0.0.0"
+    }
+
+    "Notes" "Initial release."
+  }
+
+  "Files"
+  {
+    "Plugin" "Path_SM/configs/engineersworkshop_data.cfg"
+    "Plugin" "Path_SM/gamedata/tf2.engineersworkshop.txt"
+
+    "Plugin" "Path_SM/plugins/ew_spawn.smx"
+    "Plugin" "Path_SM/translations/ew_spawn.phrases.txt"
+
+    "Source" "Path_SM/scripting/ew_spawn.sp"
+  }
+}

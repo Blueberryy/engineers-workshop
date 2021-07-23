@@ -1,0 +1,124 @@
+"Phrases"
+{
+    // Building names for displaying as text (32 character limit).
+    "EW_Buildings"
+    {
+        "en" "Buildings"
+    }
+    "EW_Sentry"
+    {
+        "en" "Sentry"
+    }
+    "EW_Sentries"
+    {
+        "en" "Sentries"
+    }
+    "EW_MiniSentry"
+    {
+        "en" "Mini-Sentry"
+    }
+    "EW_MiniSentries"
+    {
+        "en" "Mini-Sentries"
+    }
+    "EW_Dispenser"
+    {
+        "en" "Dispenser"
+    }
+    "EW_Dispensers"
+    {
+        "en" "Dispensers"
+    }
+    "EW_Teleporters"
+    {
+        "en" "Teleporters"
+    }
+    "EW_EntryTele"
+    {
+        "en" "Entry Teleporter"
+    }
+    "EW_EntryTeles"
+    {
+        "en" "Entry Teleporters"
+    }
+    "EW_ExitTele"
+    {
+        "en" "Exit Teleporter"
+    }
+    "EW_ExitTeles"
+    {
+        "en" "Exit Teleporters"
+    }
+
+
+    // Config error messages
+    "EW_NullArrayList"
+    {
+        "en" "ArrayList output argument is null."
+    }
+    "EW_NoConfig"
+    {
+        "#format" "{1:s}"
+        "en" "Could not find config file: '{1}'"
+    }
+    "EW_BadConfig"
+    {
+        "#format" "{1:s}"
+        "en" "Config file is broken or invalid: '{1}'"
+    }
+    "EW_ConfigBadType"
+    {
+        "#format" "{1:s},{2:s}"
+        "en" "Unknown building type '{1}' in config file '{2}'"
+    }
+    "EW_MissingGameData"
+    {
+        "en" "Gamedata file tf2.engineersworkshop.txt is missing or corrupted."
+    }
+    "EW_GameDataPrepError"
+    {
+        "#format" "{1:s}"
+        "en" "Gamedata error: {1} call could not be prepared."
+    }
+
+
+    // Error messages
+    "EW_InvalidEntity"
+    {
+        "#format" "{1:i}"
+        "en" "Invalid entity index '{1}'."
+    }
+    "EW_InvalidClient"
+    {
+        "#format" "{1:i}"
+        "en" "Invalid client index '{1}'."
+    }
+    
+
+    // Command related text
+    "EW_InGameCommandOnly"
+    {
+        "en" "You must be in-game to use this command."
+    }
+    "EW_SingleBuildingTypeOnly"
+    {
+        "en" "You can only choose a single building type."
+    }
+    "EW_InvalidBuildingLevel"
+    {
+        "en" "Building level must be between 1 and 3."
+    }
+    "EW_InvalidBuilding"
+    {
+        "en" "Invalid building type."
+    }
+    "EW_InvalidBoolean"
+    {
+        "en" "Invalid enabled state. Use 1 or 0."
+    }
+    "EW_NoTargetAccess"
+    {
+        "#format" "{1:s}"
+        "en" "You don't have permission to target with {1}."
+    }
+}

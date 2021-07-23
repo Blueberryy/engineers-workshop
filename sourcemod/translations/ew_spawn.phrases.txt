@@ -1,0 +1,46 @@
+"Phrases"
+{
+    "EW_ForceBuild_CmdHelp"
+    {
+        "en" "sm_forcebuild <Building> <Level> [Owner] [X] [Y] [Z]"
+    }
+    "EW_ForceBuild_InGame"
+    {
+        "en" "You must be in-game to spawn a building where you're aiming."
+    }
+    "EW_ForceBuild_Failed"
+    {
+        "en" "Failed to spawn building."
+    }
+    "EW_ForceBuild_Collision"
+    {
+        "en" "Cannot build inside a solid object."
+    }
+    "EW_ForceBuild_NoBuild"
+    {
+        "en" "Cannot build inside a no-build zone."
+    }
+    "EW_ForceBuild_RespawnRoom"
+    {
+        "en" "Cannot build inside a respawn room."
+    }
+    "EW_ForceBuild_Spawn"
+    {
+        "#format" "{1:i},{2:t}"
+        "en" "Spawned a Level {1} {2}."
+    }
+    "EW_ForceBuild_SpawnOwner"
+    {
+        "#format" "{1:i},{2:t},{3:s}"
+        "en" "Spawned a Level {1} {2}, owned by {3}."
+    }
+
+    "EW_Build_CmdHelp"
+    {
+        "en" "sm_build <Building>"
+    }
+    "EW_Build_MaxDistance"
+    {
+        "en" "Cannot build that far away."
+    }
+}

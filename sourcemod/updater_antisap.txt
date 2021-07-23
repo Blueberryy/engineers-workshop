@@ -1,0 +1,23 @@
+"Updater"
+{
+  "Information"
+  {
+    "Version"
+    {
+      "Latest" "1.0.0"
+      "Previous" "0.0.0"
+    }
+
+    "Notes" "Initial release."
+  }
+
+  "Files"
+  {
+    "Plugin" "Path_SM/configs/engineersworkshop_data.cfg"
+
+    "Plugin" "Path_SM/plugins/ew_antisap.smx"
+    "Plugin" "Path_SM/translations/ew_antisap.phrases.txt"
+
+    "Source" "Path_SM/scripting/ew_antisap.sp"
+  }
+}

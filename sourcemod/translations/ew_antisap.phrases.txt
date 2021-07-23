@@ -1,0 +1,31 @@
+"Phrases"
+{
+    "EW_AntiSap_Blocked"
+    {
+        "en" "This building cannot be sapped."
+    }
+    "EW_AntiSap_CmdHelp"
+    {
+        "en" "sm_antisap [Target] <Building> <1/0>"
+    }
+    "EW_AntiSap_Enabled"
+    {
+        "#format" "{1:t}"
+        "en" "Enabled anti-sap for {1}."
+    }
+    "EW_AntiSap_Disabled"
+    {
+        "#format" "{1:t}"
+        "en" "Disabled anti-sap for {1}."
+    }
+    "EW_AntiSap_TargetEnabled"
+    {
+        "#format" "{1:t},{2:t}"
+        "en" "Enabled anti-sap for {1}'s {2}."
+    }
+    "EW_AntiSap_TargetDisabled"
+    {
+        "#format" "{1:t},{2:t}"
+        "en" "Disabled anti-sap for {1}'s {2}."
+    }
+}
