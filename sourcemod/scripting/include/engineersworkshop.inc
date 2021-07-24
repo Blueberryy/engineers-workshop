@@ -1321,8 +1321,8 @@ stock SpawnResult EW_CanBuildAtPos(
         float scaledMaxs[3];
         for (int i = 0; i < 3; i++)
         {
-            scaledMins[i] = vecMins[i] * 0.80;
-            scaledMaxs[i] = vecMaxs[i] * 0.80;
+            scaledMins[i] = vecMins[i] * 0.85; // Don't scale too low
+            scaledMaxs[i] = vecMaxs[i] * 0.85;
         }
 
         // This is not a great way to check hull collision.

@@ -56,6 +56,7 @@ public Plugin myinfo =
 // Globals
 ConVar g_Cvar_IsUpdateEnabled;
 ConVar g_Cvar_MaxBuildDistance;
+ConVar g_Cvar_MaxBuildHeight;
 ConVar g_Cvar_BuildLevel;
 
 ConVar g_Cvar_BuildFlags;
@@ -80,7 +81,8 @@ public void OnPluginStart()
     CreateConVar("sm_ew_spawn_version", PLUGIN_VERSION, "Engineer's Workshop - Spawn version. Do Not Touch!", FCVAR_SPONLY|FCVAR_REPLICATED|FCVAR_NOTIFY|FCVAR_DONTRECORD);
     g_Cvar_IsUpdateEnabled = CreateConVar("sm_ew_spawn_update", "1", "Update Engineer's Workshop - Spawn Automatically (Requires Updater)\n(Default: 1)", FCVAR_NONE, true, 0.0, true, 1.0);
     g_Cvar_IsUpdateEnabled.AddChangeHook(OnCvarChanged);
-    g_Cvar_MaxBuildDistance = CreateConVar("sm_ew_spawn_maxbuilddistance", "130.0", "Maximum distance a player can build using sm_build.\nUse -1.0 for infinite range.\n(Default: 10.0)", FCVAR_NONE, true, -1.0, false);
+    g_Cvar_MaxBuildDistance = CreateConVar("sm_ew_spawn_maxbuilddistance", "140.0", "Maximum distance a player can build using sm_build.\nUse -1.0 for infinite range.\n(Default: 140.0)", FCVAR_NONE, true, -1.0, false);
+    g_Cvar_MaxBuildHeight = CreateConVar("sm_ew_spawn_maxbuildheight", "32.0", "Maximum height (relative to their own) a player can build using sm_build.\nUse -1.0 for no limit.\n(Default: 32.0)", FCVAR_NONE, true, -1.0, false);
     g_Cvar_BuildLevel = CreateConVar("sm_ew_spawn_build_level", "1", "Upgrade level for buildings spawned with sm_build.\n(Default: 1)", FCVAR_NONE, true, 1.0, true, 3.0);
 
     g_Cvar_BuildFlags = CreateConVar("sm_ew_spawn_build_flags", "", "Building permission flags indicating where a building can be built with sm_build\n - NOBUILD -- Allow in nobuild zones.\n - TEAMRESPAWN -- Allow in same team's respawn room.\n - RESPAWN -- Allow in any respawn room (Overrides TEAMRESPAWN).\n - COLLISION -- Allow even if colliding with surface.\n(Default: \"\")", FCVAR_NONE);
@@ -157,6 +159,18 @@ public Action Command_Build(int client, int args)
     GetClientEyeAngles(client, angles); 
     angles[0] = 0.0; // Only keep the yaw [1]
     angles[2] = 0.0;
+
+    // Reject position if it is too high or too low from the client
+    if (g_Cvar_MaxBuildHeight.FloatValue > 0.0)
+    {
+        float clientPos[3];
+        GetClientAbsOrigin(client, clientPos);
+        float diff = position[2] - clientPos[2]; // Z/Up axis
+        if (diff > g_Cvar_MaxBuildHeight.FloatValue)
+            return EW_RejectCommand(client, "%s %t", EW_CHAT_TAG, "EW_Build_MaxHeightHigh");
+        else if (diff < 0.0 && FloatAbs(diff) > g_Cvar_MaxBuildHeight.FloatValue)
+            return EW_RejectCommand(client, "%s %t", EW_CHAT_TAG, "EW_Build_MaxHeightLow");
+    }
 
     // Spawn building
     SpawnResult result = EW_SpawnBuilding(client, buildingType, position, angles, g_Cvar_BuildLevel.IntValue, g_BuildFlags);

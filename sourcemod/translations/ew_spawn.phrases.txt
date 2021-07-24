@@ -47,4 +47,12 @@
     {
         "en" "Cannot build that far away."
     }
+    "EW_Build_MaxHeightHigh"
+    {
+        "en" "Cannot build up that high."
+    }
+    "EW_Build_MaxHeightLow"
+    {
+        "en" "Cannot build down that low."
+    }
 }
