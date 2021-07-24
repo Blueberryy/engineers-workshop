@@ -48,7 +48,7 @@ public Plugin myinfo =
     url = PLUGIN_URL
 };
 
-#define ANNOTATION_COOLDOWN 4 // Seconds before another annotation can appear
+#define ANNOTATION_COOLDOWN 3 // Seconds before another annotation can appear
 
 
 //==================================================================
