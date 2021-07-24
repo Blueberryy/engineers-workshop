@@ -6,6 +6,7 @@
 # Keep only the actual files
 !/sourcemod/scripting/include/
 !/sourcemod/scripting/include/engineersworkshop.inc
+!/sourcemod/scripting/engineersworkshop_tests.sp
 !/sourcemod/scripting/ew_antisap.sp
 !/sourcemod/scripting/ew_commands.sp
 !/sourcemod/scripting/ew_spawn.sp
