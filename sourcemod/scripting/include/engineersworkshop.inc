@@ -178,7 +178,10 @@ static StringMap g_boolStrings = null;
 stock int EW_GetBuildingCount(int client, int buildingTypes=BUILDING_ALL)
 {
     if (client < 1 || client > MaxClients) // Block server/0/unowned buildings
-        return ThrowError("%T", "EW_InvalidClient", LANG_SERVER, client);
+    {
+        ThrowError("%T", "EW_InvalidClient", LANG_SERVER, client);
+        return 0;
+    }
     
     int index = MaxClients + 1;
     int type;
@@ -226,8 +229,11 @@ stock int EW_GetTargetBuildingCount(
         targetError = true;
         return 0;
     }
-    if (client < 0 || client > MaxClients)) // Allow 0 (admin calling ProcessTargets)
-        return ThrowError("%T", "EW_InvalidClient", LANG_SERVER, client);
+    if (client < 0 || client > MaxClients) // Allow 0 (admin calling ProcessTargets)
+    {
+        ThrowError("%T", "EW_InvalidClient", LANG_SERVER, client);
+        return 0;
+    }
 
     // Process targets
     TargetData data;
@@ -255,7 +261,7 @@ stock int EW_GetTargetBuildingCount(
         // Verify building is owned by one of targeted clients
         for (int i = 0; i < data.count; i++)
         {
-            if (data.target[i] == builder)
+            if (data.targets[i] == builder)
             {
                 count++;
                 break;
@@ -312,7 +318,10 @@ stock int EW_GetBuildings(
     int size)
 {
     if (client < 1 || client > MaxClients) // Block server/0/unowned buildings
-        return ThrowError("%T", "EW_InvalidClient", LANG_SERVER, client);
+    {
+        ThrowError("%T", "EW_InvalidClient", LANG_SERVER, client);
+        return 0;
+    }
     int count = EW_FindBuildings(client, buildingTypes, buildings, size, 0);
     return count;
 }
@@ -334,7 +343,10 @@ stock ArrayList EW_GetBuildingsList(int client, int buildingTypes)
 {
     // Verify client, if invalid throw error since return value is bad.
     if (client < 1 || client > MaxClients) // Block server/0/unowned buildings
-        return ThrowError("%T", "EW_InvalidClient", LANG_SERVER, client);
+    {
+        ThrowError("%T", "EW_InvalidClient", LANG_SERVER, client);
+        return null;
+    }
     
     // Create output ArrayList
     ArrayList buildings = new ArrayList();
@@ -373,8 +385,11 @@ stock int EW_GetTargetBuildings(
         targetError = true;
         return 0;
     }
-    if (client < 0 || client > MaxClients)) // Allow 0 (admin calling ProcessTargets)
-        return ThrowError("%T", "EW_InvalidClient", LANG_SERVER, client);
+    if (client < 0 || client > MaxClients) // Allow 0 (admin calling ProcessTargets)
+    {
+        ThrowError("%T", "EW_InvalidClient", LANG_SERVER, client);
+        return 0;
+    }
 
     // Process targets
     TargetData data;
@@ -418,8 +433,11 @@ stock ArrayList EW_GetTargetBuildingsList(
     // Verify args
     if (StrEqual(str, ""))
         return null;
-    if (client < 0 || client > MaxClients)) // Allow 0 (admin calling ProcessTargets)
-        return ThrowError("%T", "EW_InvalidClient", LANG_SERVER, client);
+    if (client < 0 || client > MaxClients) // Allow 0 (admin calling ProcessTargets)
+    {
+        ThrowError("%T", "EW_InvalidClient", LANG_SERVER, client);
+        return null;
+    }
 
     // Process targets
     TargetData data;
@@ -489,7 +507,10 @@ stock int EW_FindBuildings(int client, int buildingTypes, int[] buildings, int s
 {
     // Check if client can own any buildings before doing expensive search
     if (client < 1 || client > MaxClients)
-        return ThrowError("%T", "EW_InvalidClient", LANG_SERVER, client);
+    {
+        ThrowError("%T", "EW_InvalidClient", LANG_SERVER, client);
+        return 0;
+    }
 
     int index = MaxClients + 1;
     int type;
@@ -533,11 +554,17 @@ stock int EW_FindBuildingsArrayList(int client, int buildingTypes, ArrayList bui
 {
     // Check we can actually output values
     if (buildings == null)
-        return ThrowError("%T", "EW_NullArrayList", LANG_SERVER); 
+    {
+        ThrowError("%T", "EW_NullArrayList", LANG_SERVER); 
+        return 0;
+    }
 
     // Check if client can own any buildings before doing expensive search
     if (client < 1 || client > MaxClients)
-        return ThrowError("%T", "EW_InvalidClient", LANG_SERVER, client);
+    {
+        ThrowError("%T", "EW_InvalidClient", LANG_SERVER, client);
+        return 0;
+    }
 
     int index = MaxClients + 1;
     int type;
