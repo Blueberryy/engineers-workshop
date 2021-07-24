@@ -325,26 +325,27 @@ static stock void CreateBeamRing(
 static stock int ParseBuildingPermissionFlags(ConVar cvar)
 {
     // Get string
-    char buffer[64];
+    char buffer[ALLOW_FLAGS_TOTAL * 32];
+    char exploded[ALLOW_FLAGS_TOTAL][32];
     cvar.GetString(buffer, sizeof(buffer));
+    ExplodeString(buffer, ",", exploded, sizeof(exploded), sizeof(exploded[]));
 
-    // Don't assume any order, and I don't want to set up more constants
-    // to indicate how many different flags there are.
-    int index = 0;
+    // Clean string and find flags
     int flags = 0;
-    char part[32];
-    while ((index = SplitString(buffer[index], ",", part, sizeof(part))) != -1)
+    for (int i = 0; i < ALLOW_FLAGS_TOTAL; i++)
     {
-        TrimString(part);
-        if (StrEqual(part, "NOBUILD", true))
+        TrimString(exploded[i]);
+
+        if (StrEqual(exploded[i], "NOBUILD", true))
             flags |= ALLOW_NOBUILD;
-        else if (StrEqual(part, "RESPAWN", true))
+        else if (StrEqual(exploded[i], "RESPAWN", true))
             flags |= ALLOW_RESPAWN;
-        else if (StrEqual(part, "TEAMRESPAWN", true))
+        else if (StrEqual(exploded[i], "TEAMRESPAWN", true))
             flags |= ALLOW_TEAMRESPAWN;
-        else if (StrEqual(part, "COLLISION", true))
+        else if (StrEqual(exploded[i], "COLLISION", true))
             flags |= ALLOW_COLLISION;
     }
+
     return flags;
 }
 

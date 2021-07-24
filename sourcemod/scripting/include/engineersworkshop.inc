@@ -154,6 +154,7 @@ enum SentryType
 #define ALLOW_RESPAWN (1<<5)        // Allow building in any func_respawnroom zones.
 #define ALLOW_TEAMRESPAWN (1<<6)    // Allow building in same team's respawn zone.
 #define ALLOW_COLLISION (1<<7)      // Allow building even if colliding with surface.
+#define ALLOW_FLAGS_TOTAL 4         // Total nubmer of ALLOW_* flags
 
 
 //==================================================================
