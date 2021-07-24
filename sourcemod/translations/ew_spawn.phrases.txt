@@ -24,6 +24,10 @@
     {
         "en" "Cannot build inside a respawn room."
     }
+    "EW_ForceBuild_EnemyRespawnRoom"
+    {
+        "en" "Cannot build inside an enemy respawn room."
+    }
     "EW_ForceBuild_Spawn"
     {
         "#format" "{1:i},{2:t}"

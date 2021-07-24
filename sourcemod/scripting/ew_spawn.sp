@@ -167,6 +167,7 @@ public Action Command_Build(int client, int args)
             case Spawn_Collision: return EW_RejectCommand(client, "%s %t", EW_CHAT_TAG, "EW_ForceBuild_Collision");
             case Spawn_NoBuild: return EW_RejectCommand(client, "%s %t", EW_CHAT_TAG, "EW_ForceBuild_NoBuild");
             case Spawn_RespawnRoom: return EW_RejectCommand(client, "%s %t", EW_CHAT_TAG, "EW_ForceBuild_RespawnRoom");
+            case Spawn_EnemyRespawnRoom: return EW_RejectCommand(client, "%s %t", EW_CHAT_TAG, "EW_ForceBuild_EnemyRespawnRoom");
             // Default to Spawn_Error
             default: return EW_RejectCommand(client, "%s %t", EW_CHAT_TAG, "EW_ForceBuild_Failed");
         }
@@ -276,6 +277,7 @@ public Action Command_ForceBuild(int client, int args)
             case Spawn_Collision: return EW_RejectCommand(client, "%s %t", EW_CHAT_TAG, "EW_ForceBuild_Collision");
             case Spawn_NoBuild: return EW_RejectCommand(client, "%s %t", EW_CHAT_TAG, "EW_ForceBuild_NoBuild");
             case Spawn_RespawnRoom: return EW_RejectCommand(client, "%s %t", EW_CHAT_TAG, "EW_ForceBuild_RespawnRoom");
+            case Spawn_EnemyRespawnRoom: return EW_RejectCommand(client, "%s %t", EW_CHAT_TAG, "EW_ForceBuild_EnemyRespawnRoom");
             // Default to Spawn_Error
             default: return EW_RejectCommand(client, "%s %t", EW_CHAT_TAG, "EW_ForceBuild_Failed");
         }

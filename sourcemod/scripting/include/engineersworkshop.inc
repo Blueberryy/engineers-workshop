@@ -134,6 +134,7 @@ enum SpawnResult
     Spawn_Collision,
     Spawn_NoBuild,
     Spawn_RespawnRoom,
+    Spawn_EnemyRespawnRoom
 }
 
 // Variations of a sentry that can be spawned with EW_SpawnSentry
@@ -1265,6 +1266,9 @@ stock bool EW_IsEntityInRespawnRoom(int entity, bool checkIfSameTeam=false)
  * Is a building allowed to be built at a certain position.
  * This will check for collision obstruction and func_nobuild zones.
  *
+ * The building permission flag ALLOW_TEAMRESPAWN wont work as expected if
+ * the building has no current team.
+ *
  * @param building          Entity index of building.
  * @param vecMins           Entity m_vecMins.
  * @param vecMaxs           Entity m_vecMaxs.
@@ -1285,7 +1289,7 @@ stock SpawnResult EW_CanBuildAtPos(
     // Names just to make code logic more readable
     bool nobuildAllowed = view_as<bool>(buildFlags & ALLOW_NOBUILD);
     bool respawnAllowed = view_as<bool>(buildFlags & ALLOW_RESPAWN);
-    bool sameTeam = view_as<bool>(buildFlags & ALLOW_TEAMRESPAWN);
+    bool sameTeamAllowed = view_as<bool>(buildFlags & ALLOW_TEAMRESPAWN);
     bool collisionAllowed = view_as<bool>(buildFlags & ALLOW_COLLISION);
 
     if (!nobuildAllowed && EW_IsPointInNoBuild(building, pos))
@@ -1293,13 +1297,20 @@ stock SpawnResult EW_CanBuildAtPos(
     
     if (!respawnAllowed)
     {
-        // If any respawn room not allowed, check if it is the SAME TEAM'S room
+        // If any respawn room not allowed, check if it's the SAME TEAM'S room.
+        //
         // This means passing true which will only return true if inside the
         // same teams respawn room--so we need to invert the result to deny
         // players on the wrong team.
-        if (sameTeam && !EW_IsEntityInRespawnRoom(building, true))
-            return Spawn_RespawnRoom;
-        else if (!sameTeam && EW_IsEntityInRespawnRoom(building, false))
+        //
+        // Because this is used by the spawning stocks, and the entity
+        // hasn't actually been spawned yet, we can only check the spawn origin
+        // since the respawn room's IsTouching(building) func wont pass true.
+        // This ignores the hull but can correctly handle teams (if set prior).
+        // TODO: Fix this if possible.
+        if (sameTeamAllowed && !EW_IsPointInRespawnRoom(pos, building, true))
+            return Spawn_EnemyRespawnRoom;
+        else if (!sameTeamAllowed && EW_IsPointInRespawnRoom(pos))
             return Spawn_RespawnRoom;
     } 
 
@@ -1411,6 +1422,10 @@ stock SpawnResult EW_SpawnSentry(
     if (!IsValidEntity(sentry))
         return Spawn_Error;
 
+    // Set team before calling EW_CanBuildAtPos (to handle ALLOW_TEAMRESPAWN)
+    SetVariantInt(GetClientTeam(builder));
+    AcceptEntityInput(sentry, "SetTeam");
+
     // Verify building is allowed to be built in the specified position
     SpawnResult result;
     if (type == SentryType_Mini)
@@ -1500,6 +1515,10 @@ stock SpawnResult EW_SpawnDispenser(
     if (!IsValidEntity(dispenser))
         return Spawn_Error;
 
+    // Set team before calling EW_CanBuildAtPos (to handle ALLOW_TEAMRESPAWN)
+    SetVariantInt(GetClientTeam(builder));
+    AcceptEntityInput(dispenser, "SetTeam");
+
     // Verify building is allowed to be built in the specified position
     SpawnResult result = EW_CanBuildAtPos(dispenser, m_vecMins, m_vecMaxs, position, buildFlags);
     if (result != Spawn_OK)
@@ -1516,10 +1535,7 @@ stock SpawnResult EW_SpawnDispenser(
     SetEntProp(dispenser, Prop_Send, "m_bBuilding", 1);
     DispatchSpawn(dispenser);
 
-    SetVariantInt(GetClientTeam(builder));
-    AcceptEntityInput(dispenser, "SetTeam");
     SetEntProp(dispenser, Prop_Send, "m_nSkin", GetClientTeam(builder) - 2);
-
     ActivateEntity(dispenser); // Fixes screen
 
     AcceptEntityInput(dispenser, "SetBuilder", builder); // Gotta do this after activation.
@@ -1555,6 +1571,10 @@ stock SpawnResult EW_SpawnTeleporter(
     if (!IsValidEntity(teleporter))
         return Spawn_Error;
 
+    // Set team before calling EW_CanBuildAtPos (to handle ALLOW_TEAMRESPAWN)
+    SetVariantInt(GetClientTeam(builder));
+    AcceptEntityInput(teleporter, "SetTeam");
+
     // Verify building is allowed to be built in the specified position
     SpawnResult result = EW_CanBuildAtPos(teleporter, m_vecMins, m_vecMaxs, position, buildFlags);
     if (result != Spawn_OK)
@@ -1576,9 +1596,6 @@ stock SpawnResult EW_SpawnTeleporter(
     DispatchSpawn(teleporter);
 
     AcceptEntityInput(teleporter, "SetBuilder", builder);
-
-    SetVariantInt(GetClientTeam(builder));
-    AcceptEntityInput(teleporter, "SetTeam");
     return result;
 }
 
